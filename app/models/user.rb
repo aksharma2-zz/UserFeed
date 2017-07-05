@@ -1,5 +1,7 @@
 class User < ApplicationRecord
-	validates :username, presence: true
-	validates :name, presence:true
-	has_many :posts
+	validates :username, presence: true, uniqueness: { case_sensitive: false }
+	validates :name, presence: true
+	has_secure_password
+	
+	# @user = User.new(name: "Example User", email: "user@example.com",  password: "foobar", password_confirmation: "foobar")
 end
