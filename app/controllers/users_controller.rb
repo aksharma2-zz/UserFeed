@@ -1,17 +1,18 @@
 class UsersController < ApplicationController
 	skip_before_action :verify_authenticity_token
 
+
+	def new
+		render template: "users/new_user"
+	end
+
 	def index
 		@user = User.all
 		render template: "users/show"
 	end
 
-	def newUser
-		render template: "users/new_user"
-	end
-
 	def handleEdit
-		@user = User.find(params[:user_id])
+		@user = User.find(id:params[:user_id])
 		@user.name = params[:name]
 		@user.email = params[:email]
 		@user.password = params[:password]
@@ -27,7 +28,7 @@ class UsersController < ApplicationController
 	def show
 		@user = User.find(params[:id])
 		puts @user
-		render template: "users/edit_user"
+		render template: "users/show_user"
 	end
 
 	def create
@@ -43,8 +44,19 @@ class UsersController < ApplicationController
 			render text: 'User with '+ params[:username] + ' already exists'
 		else
 			@new_user = User.create(username: params[:username], name: params[:name], email: params[:email], password: params[:password])
-			@new_user.save!
-			render json: {user:@new_user}
+
+		end
+
+		if(!@new_user.valid?)
+				render template: "shared/error_messages"
+
+		else
+
+			if @new_user.save!
+				flash[:success] = "Welcome to the Sample App!"
+				redirect_to @new_user
+				#render json: {user:@new_user}
+			end
 		end
 	end
 
@@ -57,6 +69,10 @@ class UsersController < ApplicationController
 		else
 			render text: 'User ' + params[:username] + ' not found'
 		end
+	end
+
+	def login
+		render template: '/users/login'
 	end
 
 end

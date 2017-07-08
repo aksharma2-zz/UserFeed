@@ -1,0 +1,10 @@
+<!-- show all posts here -->
+<!DOCTYPE html>
+<%= render 'layouts/header' %>
+
+<div class = 'container'>
+	<% @posts.each do |p| %>
+		Heading: <%= p.heading %> <br>
+		Content: <%= p.content %> <br>
+	<% end %>
+</div>
