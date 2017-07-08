@@ -14,6 +14,7 @@ class SessionsController < ApplicationController
 
 		if @user && @user.authenticate(params[:session][:password])
 			flash[:success] = "Succesfully authenticated"
+			puts @user.id
 			log_in @user
 			redirect_to @user
 			#redirect_to url_for(:controller => :users, :action => :show, id: @user.id)

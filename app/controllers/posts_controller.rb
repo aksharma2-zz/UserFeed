@@ -2,12 +2,12 @@ class PostsController < ApplicationController
  	
 
 	def index
-		@posts = Post.find_by_user_id(@current_user.id)
+		posts = Post.find_by_user_id(current_user.id)
 		render template: '/posts/show_posts'
 	end
 
 	def create
-		@post = @current_user.posts.new(heading: params[:heading], content: params[:content])
+		@post = current_user.posts.new(heading: params[:heading], content: params[:content])
 		if @post.save
 			flash[:success] = 'Post created'
 		else

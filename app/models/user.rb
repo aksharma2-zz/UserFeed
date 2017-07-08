@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-	attr_accessor :id
 	before_save :downcase_email
 	validates :username, presence: true, uniqueness: { case_sensitive: false }
 	validates :name, presence: true

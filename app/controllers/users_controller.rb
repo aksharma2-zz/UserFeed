@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
 	skip_before_action :verify_authenticity_token
+	include SessionsHelper
 
 
 	def new
@@ -12,12 +13,13 @@ class UsersController < ApplicationController
 	end
 
 	def handleEdit
-		@user = User.find(id:params[:user_id])
+		@user = User.find(params[:user_id])
 		@user.name = params[:name]
 		@user.email = params[:email]
 		@user.password = params[:password]
 		@user.save!
-		render text: "Hi"
+		flash[:success] = "User succesfully changed"
+		redirect_to login_url
 	end
 
 	def edit
@@ -28,7 +30,11 @@ class UsersController < ApplicationController
 	def show
 		@user = User.find(params[:id])
 		puts @user
-		render template: "users/show_user"
+		if logged_in?
+			render template: "users/show_user"
+		else
+			render text:'Please login'
+		end
 	end
 
 	def create
